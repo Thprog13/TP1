@@ -1,0 +1,256 @@
+/* Style général de la page d'inscription */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #1b1b29;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.signup-container {
+  display: flex;
+  background-color: #222235;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 900px;
+  max-width: 95%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.signup-left h1 {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.signup-left p {
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+/* Partie droite (formulaire) */
+.signup-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-right h2 {
+  margin-bottom: 15px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.signup-right p {
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+.signup-right form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-right input {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2e2e48;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+.signup-right input::placeholder {
+  color: #888;
+}
+
+.signup-right button {
+  background-color: #6a5acd;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.signup-right button:hover {
+  background-color: #7a68f0;
+}
+
+.divider {
+  text-align: center;
+  color: #777;
+  margin: 10px 0;
+}
+
+.alt-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alt-buttons button {
+  background: none;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.alt-buttons button:hover {
+  background-color: #333;
+}
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+  color: #b4aaff;
+}
+
+.link a {
+  color: #b4aaff;
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+/* Style général de la page d'inscription */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #1b1b29;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.signup-container {
+  display: flex;
+  background-color: #222235;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 900px;
+  max-width: 95%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.signup-left h1 {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.signup-left p {
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+/* Partie droite (formulaire) */
+.signup-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-right h2 {
+  margin-bottom: 15px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.signup-right p {
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+.signup-right form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-right input {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2e2e48;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+.signup-right input::placeholder {
+  color: #888;
+}
+
+.signup-right button {
+  background-color: #6a5acd;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.signup-right button:hover {
+  background-color: #7a68f0;
+}
+
+.divider {
+  text-align: center;
+  color: #777;
+  margin: 10px 0;
+}
+
+.alt-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alt-buttons button {
+  background: none;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.alt-buttons button:hover {
+  background-color: #333;
+}
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+  color: #b4aaff;
+}
+
+.link a {
+  color: #b4aaff;
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
