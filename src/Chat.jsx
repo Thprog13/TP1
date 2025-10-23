@@ -9,7 +9,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { useAuth } from "./context.jsx";
-import Message from "./Message.jsx";
 import "./Chat.css";
 
 export default function Chat() {
@@ -17,6 +16,7 @@ export default function Chat() {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
+  // Charger les messages triés par date
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
     const unsub = onSnapshot(q, (snap) => {
@@ -27,6 +27,7 @@ export default function Chat() {
     return () => unsub();
   }, []);
 
+  // Envoi du message
   const sendMsg = async (e) => {
     e.preventDefault();
     if (text.trim() === "") return;
@@ -40,27 +41,71 @@ export default function Chat() {
     setText("");
   };
 
+  // Fonction utilitaire pour formater la date
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "";
+    const date = timestamp.toDate();
+    return date.toLocaleString("fr-CA", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   return (
-    <div className="chat-page">
+    <div className="chat-container">
       <header className="chat-header">
-        <h2>💬 Chat général</h2>
-        <span className="username">{user?.displayName || "Anonyme"}</span>
+        <div className="chat-title">
+          <h2>💬 Chat Général</h2>
+          <p className="chat-subtitle">Discute en direct avec les autres utilisateurs</p>
+        </div>
+        <div className="chat-user">
+          {user?.photoURL ? (
+            <img src={user.photoURL} alt="avatar" className="user-avatar" />
+          ) : (
+            <div className="avatar-placeholder">
+              {user?.displayName?.[0] || "?"}
+            </div>
+          )}
+          <span>{user?.displayName || "Anonyme"}</span>
+        </div>
       </header>
 
-      <div className="messages">
+      <div className="chat-messages">
         {messages.map((m) => (
-          <Message key={m.id} msg={m} currentUid={user.uid} />
+          <div
+            key={m.id}
+            className={`message-bubble ${m.uid === user.uid ? "own" : ""}`}
+          >
+            {m.photo ? (
+              <img src={m.photo} alt="pfp" className="msg-avatar" />
+            ) : (
+              <div className="msg-avatar-placeholder">
+                {m.name?.[0]?.toUpperCase() || "?"}
+              </div>
+            )}
+
+            <div className="msg-content">
+              <div className="msg-header">
+                <span className="msg-name">{m.name}</span>
+                <span className="msg-time">{formatDate(m.createdAt)}</span>
+              </div>
+              <p className="msg-text">{m.text}</p>
+            </div>
+          </div>
         ))}
       </div>
 
-      <form className="message-form" onSubmit={sendMsg}>
+      <form className="chat-form" onSubmit={sendMsg}>
         <input
           type="text"
-          placeholder="Écris ton message..."
+          placeholder="💭 Écris ton message..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button type="submit">Envoyer</button>
+        <button type="submit">Envoyer 🚀</button>
       </form>
     </div>
   );
