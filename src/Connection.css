@@ -1,0 +1,218 @@
+/* ============================
+   STYLE GLOBAL
+============================ */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #141421, #1b1b29, #1f1f37);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ============================
+   CONTAINER PRINCIPAL
+============================ */
+.connection-container {
+  background-color: #222235;
+  border-radius: 20px;
+  padding: 40px;
+  width: 420px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================
+   TITRES ET TEXTES
+============================ */
+.connection-container h2 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.connection-container h3 {
+  margin-top: 25px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #b4aaff;
+  text-align: center;
+}
+
+.connection-container p {
+  color: #aaa;
+  text-align: center;
+}
+
+/* ============================
+   FORMULAIRE
+============================ */
+.connection-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.connection-container input {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2e2e48;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.connection-container input:focus {
+  background-color: #35355a;
+  box-shadow: 0 0 0 2px #6a5acd;
+}
+
+.connection-container input::placeholder {
+  color: #888;
+}
+
+/* ============================
+   BOUTONS
+============================ */
+.connection-container button {
+  background-color: #6a5acd;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 10px;
+}
+
+.connection-container button:hover {
+  background-color: #7a68f0;
+  transform: scale(1.03);
+}
+
+/* ============================
+   CONNEXION PAR TÉLÉPHONE
+============================ */
+.phone-login {
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid #333;
+  padding-top: 20px;
+}
+
+.phone-login button {
+  background-color: #444475;
+  border-radius: 10px;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.phone-login button:hover {
+  background-color: #6a5acd;
+}
+
+/* ============================
+   BOUTONS ALTERNATIFS
+============================ */
+.alt-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.alt-buttons button {
+  background: none;
+  border: 1px solid #555;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.alt-buttons button:hover {
+  background-color: #333;
+  border-color: #6a5acd;
+}
+
+/* ============================
+   DIVISEUR ET LIENS
+============================ */
+.divider {
+  text-align: center;
+  color: #777;
+  margin: 25px 0 10px 0;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #333;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.link {
+  text-align: center;
+  margin-top: 25px;
+  color: #b4aaff;
+}
+
+.link a {
+  color: #b4aaff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+
+/* ============================
+   MESSAGES D’ERREUR
+============================ */
+.error {
+  color: #ff6b6b;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 15px;
+}
