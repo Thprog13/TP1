@@ -1,31 +1,21 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./context.jsx";
-import Navbar from "./Navbar.jsx";
-import Connection from "./Connection.jsx";
-import Inscription from "./inscription.jsx";
+import { Routes, Route } from "react-router-dom";
 import Chat from "./Chat.jsx";
+import PrivateChatPage from "./PrivateChatPage.jsx";
 import Profil from "./Profil.jsx";
+import Connection from "./Connection.jsx";
+import Inscription from "./Inscription.jsx";
+import Navbar from "./Navbar.jsx";
 
 export default function Routage() {
-  const { user } = useAuth();
-
-  if (!user) {
-    return (
-      <Routes>
-        <Route path="/login" element={<Connection />} />
-        <Route path="/signup" element={<Inscription />} />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    );
-  }
-
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/" element={<Chat />} />
         <Route path="/profil" element={<Profil />} />
-        <Route path="*" element={<Navigate to="/chat" />} />
+        <Route path="/login" element={<Connection />} />
+        <Route path="/register" element={<Inscription />} />
+        <Route path="/dm" element={<PrivateChatPage />} />
       </Routes>
     </>
   );

@@ -15,8 +15,8 @@ export default function Navbar() {
       <h2>Chat Party</h2>
       <div>
         <Link to="/">Accueil</Link>
-        <Link to="/create">Créer</Link>
         <Link to="/profil">Profil</Link>
+        <Link to="/dm">💌 Messages Privés</Link>
         <button onClick={logout}>Déconnexion</button>
       </div>
     </nav>
