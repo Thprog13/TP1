@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { auth, googleProvider } from "./firebase";
-import { createUserWithEmailAndPassword, signInWithPopup, signInAnonymously, updateProfile } from "firebase/auth";
+import { auth } from "./firebase";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile
+} from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import "./inscription.css";
-
 
 export default function Inscription() {
   const [email, setEmail] = useState("");
@@ -12,7 +14,6 @@ export default function Inscription() {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  // Création compte Email/Password
   const handleRegister = async (e) => {
     e.preventDefault();
     setMsg("");
@@ -25,28 +26,8 @@ export default function Inscription() {
     }
   };
 
-  // Connexion Google
-  const handleGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-      navigate("/");
-    } catch (err) {
-      setMsg("Erreur Google: " + err.message);
-    }
-  };
-
-  // Connexion anonyme
-  const handleAnonymous = async () => {
-    try {
-      await signInAnonymously(auth);
-      navigate("/");
-    } catch (err) {
-      setMsg("Erreur anonyme: " + err.message);
-    }
-  };
-
   return (
-    <div>
+    <div className="inscription-container">
       <h2>Créer un compte</h2>
 
       <form onSubmit={handleRegister}>
@@ -74,16 +55,11 @@ export default function Inscription() {
         <button type="submit">S'inscrire</button>
       </form>
 
-      <p>ou</p>
-
-      <button onClick={handleGoogle}>Connexion avec Google</button>
-      <button onClick={handleAnonymous}>Connexion anonyme</button>
-
-      <p>
+      <p className="link">
         Déjà un compte ? <Link to="/login">Connecte-toi ici</Link>
       </p>
 
-      {msg && <p style={{ color: "red" }}>{msg}</p>}
+      {msg && <p className="error">{msg}</p>}
     </div>
   );
 }
