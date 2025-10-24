@@ -8,6 +8,8 @@ import {
 } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, storage } from "./firebase";
+import "./Profil.css";
+
 
 export default function Profil() {
   const { user } = useAuth();
@@ -53,6 +55,12 @@ export default function Profil() {
     }
   };
 
+    const getInitial = (name) => {
+    if (!name) return "?";
+    return name.trim().charAt(0).toUpperCase();
+  };
+
+
   const convertAccount = async () => {
     if (!isAnon) return;
     if (!emailConv || !passConv || !passConv2)
@@ -70,54 +78,65 @@ export default function Profil() {
   };
 
   return (
-    <div>
-      <h2>Profil utilisateur</h2>
+    <div className="profil-container">
+      <section className="preview-current-avatar">
+        <div className="current-avatar-wrap" aria-hidden={false}>
+          {user?.photoURL ? (
+            <img
+              src={user.photoURL}
+              alt="Photo de profil actuelle"
+              className="current-avatar-preview"
+            />
+          ) : (
+            <div className="current-avatar-placeholder" aria-hidden="true">
+              {getInitial(user?.displayName)}
+            </div>
+          )}
+        </div>
+      </section>
 
       {user && (
-        <>
-          <p>
-            <strong>UID :</strong> {user.uid}
-          </p>
+        <div className="user-info-card">
+          
           <p>
             <strong>Email :</strong> {user.email || "Compte anonyme"}
           </p>
           <p>
-            <strong>Nom d’affichage :</strong>{" "}
+            <strong>Nom d'affichage :</strong>{" "}
             {user.displayName || "(non défini)"}
           </p>
           <p>
             <strong>Fournisseur :</strong>{" "}
             {user.providerData[0]?.providerId || "inconnu"}
           </p>
-        </>
-      )}
-
-      <hr />
-
-      <h3>Modifier le nom</h3>
-      <input
-        type="text"
-        placeholder="Nouveau nom"
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
-      />
-      <button onClick={updateName}>Mettre à jour</button>
-
-      <hr />
-
-      <h3>Photo de profil</h3>
-      <input type="file" onChange={(e) => setAvatarFile(e.target.files[0])} />
-      {preview && (
-        <div>
-          <p>Aperçu :</p>
-          <img src={preview} alt="preview" width={120} />
         </div>
       )}
-      <button onClick={uploadAvatar}>Téléverser</button>
+
+      <div className="profil-section">
+        <h3>Modifier le nom</h3>
+        <input
+          type="text"
+          placeholder="Nouveau nom"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <button onClick={updateName}>Mettre à jour</button>
+      </div>
+
+      <div className="profil-section">
+        <h3>Changer votre photo de profil</h3>
+        <input type="file" onChange={(e) => setAvatarFile(e.target.files[0])} />
+        {preview && (
+          <div className="preview-container">
+            <p>Aperçu :</p>
+            <img src={preview} alt="preview" width={120} />
+          </div>
+        )}
+        <button onClick={uploadAvatar}>Téléverser</button>
+      </div>
 
       {isAnon && (
-        <>
-          <hr />
+        <div className="profil-section convert-section">
           <h3>Convertir le compte anonyme</h3>
           <input
             type="email"
@@ -138,10 +157,14 @@ export default function Profil() {
             onChange={(e) => setPassConv2(e.target.value)}
           />
           <button onClick={convertAccount}>Convertir mon compte</button>
-        </>
+        </div>
       )}
 
-      {msg && <p style={{ color: "green" }}>{msg}</p>}
+      {msg && (
+        <p className={`message-alert ${msg.includes('Erreur') ? 'error' : 'success'}`}>
+          {msg}
+        </p>
+      )}
     </div>
   );
 }

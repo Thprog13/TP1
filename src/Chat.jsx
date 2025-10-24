@@ -10,11 +10,16 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "./context.jsx";
 import "./Chat.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Chat() {
   const { user } = useAuth();
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
+  const goToProfile = () => navigate("/profil");
+  const onProfileKey = (e) => { if (e.key === "Enter" || e.key === " ") goToProfile(); }
+ 
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
@@ -55,10 +60,17 @@ export default function Chat() {
     <div className="chat-container">
       <header className="chat-header">
         <div className="chat-title">
-          <h2>💬 Chat Général</h2>
-          <p className="chat-subtitle">Discute en direct avec les autres utilisateurs</p>
+          <h2> Chat Général</h2>
         </div>
-        <div className="chat-user">
+        <div
+          className="chat-user"
+          role="button"
+          tabIndex={0}
+          onClick={goToProfile}
+          onKeyDown={onProfileKey}
+          aria-label="Aller à la page profil"
+          title="Voir mon profil"
+        >
           {user?.photoURL ? (
             <img src={user.photoURL} alt="avatar" className="user-avatar" />
           ) : (

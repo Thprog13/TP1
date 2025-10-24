@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   updateProfile
 } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import "./inscription.css";
 
@@ -19,7 +20,17 @@ export default function Inscription() {
     setMsg("");
     try {
       const res = await createUserWithEmailAndPassword(auth, email, pass);
+      
       await updateProfile(res.user, { displayName: pseudo });
+      
+      await setDoc(doc(db, "users", res.user.uid), {
+        displayName: pseudo,
+        email: email,
+        photoURL: null,
+        createdAt: serverTimestamp(),
+        lastSeen: serverTimestamp()
+      });
+      
       navigate("/");
     } catch (err) {
       setMsg("Erreur: " + err.message);

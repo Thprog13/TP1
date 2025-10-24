@@ -1,26 +1,25 @@
 import { useState } from "react";
 import { useAuth } from "./context.jsx";
-import FriendsList from "./FriendsList.jsx";
+import UsersList from "./UserList.jsx";
 import Chat2 from "./Chat2.jsx";
 import "./PrivateChatPage.css";
 
 export default function PrivateChatPage() {
   const { user } = useAuth();
-  const [selectedFriend, setSelectedFriend] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   return (
     <div className="private-chat-layout">
-      {}
-      <FriendsList onSelectFriend={setSelectedFriend} currentUid={user.uid} />
+      <UsersList onSelectUser={setSelectedUser} currentUid={user.uid} />
 
-      {}
       <div className="chat-area">
-        {selectedFriend ? (
-          <Chat2 targetUser={selectedFriend} />
+        {selectedUser ? (
+          <Chat2 targetUser={selectedUser} />
         ) : (
           <div className="empty-chat">
-            <h2>Sélectionne un ami 💬</h2>
-            <p>Choisis quelqu’un dans la liste à gauche pour discuter en privé.</p>
+            <div className="empty-chat-icon">💬</div>
+            <h2>Sélectionne un utilisateur</h2>
+            <p>Choisis quelqu'un dans la liste à gauche pour commencer une conversation privée.</p>
           </div>
         )}
       </div>

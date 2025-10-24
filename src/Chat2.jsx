@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
-import { db } from "./firebase.js";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
-import { useAuth } from "./context.jsx";
-import Message from "./Message.jsx";
-import "./Chat.css";
+  import { useEffect, useState } from "react";
+  import { db } from "./firebase.js";
+  import {
+    addDoc,
+    collection,
+    onSnapshot,
+    orderBy,
+    query,
+    serverTimestamp,
+  } from "firebase/firestore";
+  import { useAuth } from "./context.jsx";
+  import Message from "./Message.jsx";
+  import "./Chat.css";
 
-export default function Chat2({ targetUser }) {
+ export default function Chat2({ targetUser }) {
   const { user } = useAuth();
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const convoId = [user.uid, targetUser.uid].sort().join("_");
+  // Utiliser targetUser.id au lieu de targetUser.uid
+  const convoId = [user.uid, targetUser.id].sort().join("_");
 
   useEffect(() => {
     const q = query(
@@ -45,27 +46,77 @@ export default function Chat2({ targetUser }) {
     setText("");
   };
 
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "";
+    const date = timestamp.toDate();
+    return date.toLocaleString("fr-CA", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   return (
-    <div className="chat-page">
-      <header className="chat-header">
-        <h2>💬 Discussion privée avec {targetUser.displayName}</h2>
-        <span className="username">{user?.displayName || "Anonyme"}</span>
+    <div className="chat2-container">
+      <header className="chat2-header">
+        <div className="chat2-user-info">
+          {targetUser.photoURL ? (
+            <img src={targetUser.photoURL} alt="avatar" className="chat2-avatar" />
+          ) : (
+            <div className="chat2-avatar-placeholder">
+            </div>
+          )}
+          <div className="chat2-title">
+            <h2>{targetUser.displayName || "Anonyme"}</h2>
+          </div>
+        </div>
       </header>
 
-      <div className="messages">
-        {messages.map((m) => (
-          <Message key={m.id} msg={m} currentUid={user.uid} />
-        ))}
+      <div className="chat2-messages">
+        {messages.length === 0 ? (
+          <div className="no-messages">
+            <p>Aucun message encore. Commencez la conversation! </p>
+          </div>
+        ) : (
+          messages.map((m) => (
+            <div
+              key={m.id}
+              className={`message-bubble ${m.uid === user.uid ? "own" : "other"}`}
+            >
+              {m.uid !== user.uid && (
+                <>
+                  {m.photo ? (
+                    <img src={m.photo} alt="pfp" className="msg-avatar" />
+                  ) : (
+                    <div className="msg-avatar-placeholder">
+                      {m.name?.[0]?.toUpperCase() || "?"}
+                    </div>
+                  )}
+                </>
+              )}
+
+              <div className="msg-content">
+                {m.uid !== user.uid && (
+                  <span className="msg-name">{m.name}</span>
+                )}
+                <p className="msg-text">{m.text}</p>
+                <span className="msg-time">{formatDate(m.createdAt)}</span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
-      <form className="message-form" onSubmit={sendMsg}>
+      <form className="chat-form" onSubmit={sendMsg}>
         <input
           type="text"
-          placeholder={`Message à ${targetUser.displayName}...`}
+          placeholder="💭 Écris ton message..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button type="submit">Envoyer</button>
+        <button type="submit">Envoyer </button>
       </form>
     </div>
   );
