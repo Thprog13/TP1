@@ -21,7 +21,6 @@ export default function Profil() {
 
   const isAnon = user?.isAnonymous;
 
-  // Prévisualisation de la photo avant upload
   useEffect(() => {
     if (!avatarFile) {
       setPreview(null);
@@ -32,7 +31,6 @@ export default function Profil() {
     reader.readAsDataURL(avatarFile);
   }, [avatarFile]);
 
-  // 🔄 Met à jour le nom d'affichage
   const updateName = async () => {
     try {
       await updateProfile(auth.currentUser, { displayName: newName });
@@ -42,7 +40,6 @@ export default function Profil() {
     }
   };
 
-  // 🖼️ Téléversement de la photo de profil
   const uploadAvatar = async () => {
     try {
       if (!avatarFile) return setMsg("Choisissez une image avant !");
@@ -56,7 +53,6 @@ export default function Profil() {
     }
   };
 
-  // 🔐 Conversion d’un compte anonyme → permanent
   const convertAccount = async () => {
     if (!isAnon) return;
     if (!emailConv || !passConv || !passConv2)

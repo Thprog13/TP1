@@ -17,10 +17,8 @@ export default function Chat2({ targetUser }) {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // 🧩 Identifiant unique pour la conversation privée
   const convoId = [user.uid, targetUser.uid].sort().join("_");
 
-  // 📡 Charger les messages privés en temps réel
   useEffect(() => {
     const q = query(
       collection(db, "privateChats", convoId, "messages"),
@@ -34,7 +32,6 @@ export default function Chat2({ targetUser }) {
     return () => unsub();
   }, [convoId]);
 
-  // 📨 Envoyer un message
   const sendMsg = async (e) => {
     e.preventDefault();
     if (text.trim() === "") return;

@@ -16,7 +16,6 @@ export default function Chat() {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // Charger les messages triés par date
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
     const unsub = onSnapshot(q, (snap) => {
@@ -27,7 +26,6 @@ export default function Chat() {
     return () => unsub();
   }, []);
 
-  // Envoi du message
   const sendMsg = async (e) => {
     e.preventDefault();
     if (text.trim() === "") return;
@@ -41,7 +39,6 @@ export default function Chat() {
     setText("");
   };
 
-  // Fonction utilitaire pour formater la date
   const formatDate = (timestamp) => {
     if (!timestamp) return "";
     const date = timestamp.toDate();

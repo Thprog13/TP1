@@ -10,10 +10,10 @@ export default function PrivateChatPage() {
 
   return (
     <div className="private-chat-layout">
-      {/* 🧭 Liste d'amis à gauche */}
+      {}
       <FriendsList onSelectFriend={setSelectedFriend} currentUid={user.uid} />
 
-      {/* 💬 Zone du chat à droite */}
+      {}
       <div className="chat-area">
         {selectedFriend ? (
           <Chat2 targetUser={selectedFriend} />

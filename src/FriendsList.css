@@ -44,3 +44,47 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.04);
+  transition: transform 0.06s ease, background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.friend-item:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.friend-item.active {
+  background: linear-gradient(180deg, rgba(124,58,237,0.18), rgba(124,58,237,0.10));
+  border-color: rgba(124,58,237,0.35);
+}
+
+.friend-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+.friend-name {
+  font-weight: 600;
+}
+
+.friend-status {
+  font-size: 0.8rem;
+  color: var(--muted);
+}

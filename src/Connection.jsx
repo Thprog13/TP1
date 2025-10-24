@@ -10,10 +10,10 @@ import {
   linkWithCredential,
   GoogleAuthProvider,
   GithubAuthProvider,
-  EmailAuthProvider, // Nécessaire pour identifier le type de fournisseur email/password
+  EmailAuthProvider,
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import "./Connection.css"; // Assurez-vous que ce chemin est correct
+import "./Connection.css";
 
 export default function Connection() {
   const [email, setEmail] = useState("");
@@ -25,29 +25,25 @@ export default function Connection() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // États pour la gestion des conflits d'adresse e-mail
   const [pendingCredential, setPendingCredential] = useState(null);
   const [expectedEmail, setExpectedEmail] = useState("");
   const [showLinkingFlow, setShowLinkingFlow] = useState(false);
   const [existingProviderId, setExistingProviderId] = useState("");
 
-  // Ref pour l'instance RecaptchaVerifier (pour s'assurer qu'elle est créée une seule fois)
   const recaptchaVerifierRef = useRef(null);
 
   useEffect(() => {
     const initRecaptcha = async () => {
-      // Vérifiez que le conteneur existe
+
       const container = document.getElementById("recaptcha-container");
       if (container) {
-        // Configure auth.settings.appVerificationDisabledForTesting AVANT de créer RecaptchaVerifier
-        // Si auth.settings est undefined (ce qui ne devrait pas arriver normalement), on l'initialise
+
         if (!auth.settings) {
           console.warn("auth.settings était undefined. Initialisation pour la compatibilité.");
           auth.settings = {};
         }
         auth.settings.appVerificationDisabledForTesting = true;
 
-        // Créer RecaptchaVerifier une seule fois par montage de composant
         if (!recaptchaVerifierRef.current) {
           try {
             const verifier = new RecaptchaVerifier(container, { size: "invisible" }, auth);
@@ -66,7 +62,6 @@ export default function Connection() {
 
     initRecaptcha();
 
-    // Fonction de nettoyage pour useEffect
     return () => {
       if (recaptchaVerifierRef.current && typeof recaptchaVerifierRef.current.clear === 'function') {
         recaptchaVerifierRef.current.clear();
@@ -74,7 +69,7 @@ export default function Connection() {
         console.log("RecaptchaVerifier nettoyé.");
       }
     };
-  }, []); // Le tableau de dépendances vide assure que cela ne s'exécute qu'une seule fois au montage.
+  }, []);
 
   const handleError = (err) => {
     console.error(err);
@@ -94,11 +89,10 @@ export default function Connection() {
     setLoading(false);
   };
 
-  // Gestion générique de la connexion par pop-up (Google, GitHub, etc.)
   const handlePopupLogin = async (provider, providerName) => {
     setMsg("");
     setLoading(true);
-    setShowLinkingFlow(false); // Cacher le flux de liaison en cas de nouvelle tentative
+    setShowLinkingFlow(false);
 
     try {
       await signInWithPopup(auth, provider);
@@ -106,7 +100,7 @@ export default function Connection() {
     } catch (err) {
       if (err.code === "auth/account-exists-with-different-credential") {
         const email = err.customData.email;
-        const pendingCred = err.credential; // Le credential du fournisseur qui a échoué (ex: GitHub)
+        const pendingCred = err.credential;
 
         setExpectedEmail(email);
         setPendingCredential(pendingCred);
@@ -117,7 +111,7 @@ export default function Connection() {
           if (signInMethods && signInMethods.length > 0) {
             const firstExistingMethod = signInMethods[0];
             setExistingProviderId(firstExistingMethod);
-            setShowLinkingFlow(true); // Afficher la UI de liaison
+            setShowLinkingFlow(true);
 
             setMsg(
               `Un compte existe déjà avec cet e-mail (${email}) via ${firstExistingMethod}. ` +
@@ -136,7 +130,6 @@ export default function Connection() {
     setLoading(false);
   };
 
-  // Gestion de la connexion anonyme
   const handleAnonymous = async () => {
     setMsg("");
     setLoading(true);
@@ -149,7 +142,6 @@ export default function Connection() {
     setLoading(false);
   };
 
-  // Gestion de l'envoi du code SMS pour la connexion téléphonique
   const handleSendSMS = async () => {
     setMsg("");
     if (!phone) return setMsg("Veuillez entrer un numéro de téléphone valide");
@@ -166,7 +158,7 @@ export default function Connection() {
       setMsg("Code envoyé par SMS !");
     } catch (err) {
       handleError({ message: "Erreur SMS: " + err.message + ". Assurez-vous que reCAPTCHA est bien chargé et que votre numéro de test est configuré." });
-      // Réinitialiser le reCAPTCHA en cas d'échec pour une nouvelle tentative
+
       if (recaptchaVerifierRef.current && typeof recaptchaVerifierRef.current.clear === 'function') {
          recaptchaVerifierRef.current.clear();
          recaptchaVerifierRef.current = null;
@@ -175,7 +167,6 @@ export default function Connection() {
     setLoading(false);
   };
 
-  // Gestion de la vérification du code SMS
   const handleVerifyCode = async () => {
     setMsg("");
     if (!confirmationResult) return setMsg("Aucun code envoyé");
@@ -190,7 +181,6 @@ export default function Connection() {
     setLoading(false);
   };
 
-  // Fonction pour gérer la re-authentification et la liaison de compte
   const handleReAuthenticateAndLink = async () => {
     setMsg("");
     setLoading(true);
@@ -202,15 +192,14 @@ export default function Connection() {
       }
 
       let userCredential;
-      // Re-authentifier l'utilisateur avec son compte existant
+
       if (existingProviderId === GoogleAuthProvider.PROVIDER_ID) {
         userCredential = await signInWithPopup(auth, googleProvider);
       } else if (existingProviderId === GithubAuthProvider.PROVIDER_ID) {
-        // Assurez-vous que githubProvider est correctement importé et initialisé
+
         userCredential = await signInWithPopup(auth, githubProvider);
       } else if (existingProviderId === EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) {
-        // Pour email/password, il faut une UI spécifique pour redemander le mot de passe
-        // Ici, je me contente d'un message d'erreur.
+
         setMsg("Veuillez vous reconnecter avec votre email/mot de passe existant. Cette fonctionnalité n'est pas encore implémentée pour la liaison.");
         setLoading(false);
         return;
@@ -220,7 +209,6 @@ export default function Connection() {
         return;
       }
 
-      // Si la re-authentification est réussie, lier le nouveau credential
       if (userCredential && userCredential.user) {
         await linkWithCredential(userCredential.user, pendingCredential);
         setMsg("Compte lié avec succès ! Vous pouvez maintenant vous connecter avec les deux fournisseurs.");
@@ -239,12 +227,11 @@ export default function Connection() {
     setLoading(false);
   };
 
-
   return (
     <div className="connection-container">
       <h2>Connexion</h2>
 
-      {/* Connexion Email / Mot de passe */}
+      {}
       <form onSubmit={handleLogin}>
         <input
           type="email"
@@ -267,7 +254,7 @@ export default function Connection() {
 
       <p className="divider">ou</p>
 
-      {/* Connexion par téléphone */}
+      {}
       <div className="phone-login">
         <h3>Connexion par téléphone</h3>
         <input
@@ -280,7 +267,7 @@ export default function Connection() {
           {loading ? "Envoi..." : "Envoyer le code"}
         </button>
 
-        {/* Afficher l'input pour le code OTP si le SMS a été envoyé */}
+        {}
         {confirmationResult && (
           <>
             <input
@@ -296,7 +283,7 @@ export default function Connection() {
         )}
       </div>
 
-      {/* Boutons de connexion alternatifs */}
+      {}
       <div className="alt-buttons">
         <button onClick={() => handlePopupLogin(googleProvider, "Google")} disabled={loading}>
           Connexion avec Google
@@ -313,22 +300,22 @@ export default function Connection() {
         Pas encore de compte ? <Link to="/signup">Inscris-toi ici</Link>
       </p>
 
-      {/* Section pour la liaison de compte si un conflit est détecté */}
+      {}
       {showLinkingFlow && (
         <div className="linking-flow-container">
           <h3>Liaison de compte requise</h3>
-          <p className="error">{msg}</p> {/* Affiche le message détaillé à l'utilisateur */}
+          <p className="error">{msg}</p> {}
           <button onClick={handleReAuthenticateAndLink} disabled={loading}>
             {loading ? "Re-connexion..." : `Reconnectez-vous avec ${existingProviderId}`}
           </button>
         </div>
       )}
 
-      {/* Conteneur pour le reCAPTCHA invisible */}
+      {}
       <div id="recaptcha-container"></div>
 
-      {/* Affichage des messages d'erreur ou de succès */}
-      {msg && !showLinkingFlow && <p className="error">{msg}</p>} {/* N'affiche pas msg si c'est géré par le flux de liaison */}
+      {}
+      {msg && !showLinkingFlow && <p className="error">{msg}</p>} {}
     </div>
   );
 }

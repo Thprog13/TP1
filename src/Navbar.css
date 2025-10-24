@@ -46,3 +46,31 @@
 .server-icon.logout:hover {
   background-color: #ff5a5f;
 }
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(10,12,22,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-1);
+}
+
+.navbar .title {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.navbar .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.navbar .actions .btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.14);
+  color: var(--text);
+}

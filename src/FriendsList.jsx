@@ -6,7 +6,6 @@ import "./FriendsList.css";
 export default function FriendsList({ onSelectFriend, currentUid }) {
   const [friends, setFriends] = useState([]);
 
-  // 🔎 Récupérer les utilisateurs (autres que toi)
   useEffect(() => {
     const q = query(collection(db, "users"), orderBy("displayName"));
     const unsub = onSnapshot(q, (snap) => {
