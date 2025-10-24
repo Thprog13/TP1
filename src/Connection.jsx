@@ -62,7 +62,6 @@ export default function Connection() {
     if (userDoc.exists()) {
       await updateDoc(userRef, {
         status: "online",
-        online: true,
         lastSeen: serverTimestamp(),
       });
     } else {
