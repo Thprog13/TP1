@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import { signOut } from "firebase/auth";
 import "./Navbar.css";
+import { doc, updateDoc } from "firebase/firestore";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -10,6 +11,16 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const logout = async () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, {
+        status: "offline",
+        lastSeen: new Date(),
+      });
+    }
+
     await signOut(auth);
     navigate("/login");
   };
