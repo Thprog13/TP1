@@ -68,7 +68,6 @@ export default function Connection() {
       await setDoc(userRef, {
         email: user.email || null,
         status: "online",
-        online: true,
         lastSeen: serverTimestamp(),
         createdAt: serverTimestamp(),
       });
