@@ -14,7 +14,7 @@ export default function Routage() {
         <Route path="/" element={<Chat />} />
         <Route path="/profil" element={<Profil />} />
         <Route path="/login" element={<Connection />} />
-        <Route path="/register" element={<Inscription />} />
+        <Route path="/signup" element={<Inscription />} />
         <Route path="/dm" element={<PrivateChatPage />} />
       </Routes>
     </>
