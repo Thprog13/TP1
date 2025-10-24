@@ -8,7 +8,10 @@ import {
 } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, storage } from "./firebase";
-import "./Profil.css";
+import "./Profil.css";    
+import { doc, setDoc } from "firebase/firestore" ;
+import { db } from "./firebase";
+
 
 
 export default function Profil() {
@@ -49,6 +52,15 @@ export default function Profil() {
       await uploadBytes(path, avatarFile);
       const url = await getDownloadURL(path);
       await updateProfile(auth.currentUser, { photoURL: url });
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          photoURL: url,
+          displayName: auth.currentUser.displayName || null,
+          email: auth.currentUser.email || null,
+        },
+        { merge: true }
+      );
       setMsg("Photo de profil mise à jour !");
     } catch (err) {
       setMsg("Erreur upload : " + err.message);

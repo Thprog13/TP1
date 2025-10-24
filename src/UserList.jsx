@@ -11,11 +11,10 @@ export default function UsersList({ onSelectUser, currentUid }) {
     const q = query(collection(db, "users"));
     const unsub = onSnapshot(q, (snap) => {
       const arr = [];
-      snap.forEach((doc) => {
-        const data = doc.data();
-        // Ne pas afficher l'utilisateur actuel
-        if (doc.id !== currentUid) {
-          arr.push({ id: doc.id, ...data });
+      snap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (docSnap.id !== currentUid) {
+          arr.push({ id: docSnap.id, ...data });
         }
       });
       setUsers(arr);
@@ -41,32 +40,45 @@ export default function UsersList({ onSelectUser, currentUid }) {
             <p>Aucun utilisateur disponible</p>
           </div>
         ) : (
-          users.map((user) => (
-            <div
-              key={user.id}
-              className={`user-item ${selectedUserId === user.id ? "active" : ""}`}
-              onClick={() => handleSelectUser(user)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  handleSelectUser(user);
-                }
-              }}
-            >
-              {user.photoURL ? (
-                <img src={user.photoURL} alt={user.displayName} className="user-item-avatar" />
-              ) : (
-                <div className="user-item-placeholder">
-                  {user.displayName?.[0]?.toUpperCase() || "?"}
+          users.map((user) => {
+            const avatar =
+              user.photoURL ||
+              user.photo ||
+              user.avatar ||
+              user.photoUrl ||
+              null;
+
+            return (
+              <div
+                key={user.id}
+                className={`user-item ${selectedUserId === user.id ? "active" : ""}`}
+                onClick={() => handleSelectUser(user)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handleSelectUser(user);
+                  }
+                }}
+              >
+                {avatar ? (
+                  <img
+                    src={avatar}
+                    alt={user.displayName ? `Avatar de ${user.displayName}` : "Avatar"}
+                    className="user-item-avatar"
+                  />
+                ) : (
+                  <div className="user-item-placeholder">
+                    {user.displayName?.[0]?.toUpperCase() || "?"}
+                  </div>
+                )}
+                <div className="user-item-info">
+                  <span className="user-item-name">{user.displayName || "Anonyme"}</span>
+                  <span className="user-item-status">{user.status || "Pas d'email"}</span>
                 </div>
-              )}
-              <div className="user-item-info">
-                <span className="user-item-name">{user.displayName || "Anonyme"}</span>
-                <span className="user-item-email">{user.email || "Pas d'email"}</span>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>

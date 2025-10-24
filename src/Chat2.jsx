@@ -1,29 +1,28 @@
-  import { useEffect, useState } from "react";
-  import { db } from "./firebase.js";
-  import {
-    addDoc,
-    collection,
-    onSnapshot,
-    orderBy,
-    query,
-    serverTimestamp,
-  } from "firebase/firestore";
-  import { useAuth } from "./context.jsx";
-  import Message from "./Message.jsx";
-  import "./Chat.css";
+import { useEffect, useState } from "react";
+import { db } from "./firebase.js";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
+import { useAuth } from "./context.jsx";
+import Message from "./Message.jsx";
+import "./Chat.css";
 
- export default function Chat2({ targetUser }) {
+export default function Chat2({ targetUser }) {
   const { user } = useAuth();
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // Utiliser targetUser.id au lieu de targetUser.uid
   const convoId = [user.uid, targetUser.id].sort().join("_");
 
   useEffect(() => {
     const q = query(
       collection(db, "privateChats", convoId, "messages"),
-      orderBy("createdAt", "asc")
+      orderBy("createdAt", "desc")
     );
     const unsub = onSnapshot(q, (snap) => {
       const arr = [];
@@ -59,53 +58,50 @@
   };
 
   return (
-    <div className="chat2-container">
-      <header className="chat2-header">
+    <div className="chat-container">
+      <header className="chat-header">
         <div className="chat2-user-info">
-          {targetUser.photoURL ? (
-            <img src={targetUser.photoURL} alt="avatar" className="chat2-avatar" />
-          ) : (
-            <div className="chat2-avatar-placeholder">
-            </div>
-          )}
           <div className="chat2-title">
             <h2>{targetUser.displayName || "Anonyme"}</h2>
           </div>
         </div>
       </header>
 
-      <div className="chat2-messages">
+      <div className="chat-messages">
         {messages.length === 0 ? (
           <div className="no-messages">
             <p>Aucun message encore. Commencez la conversation! </p>
           </div>
         ) : (
-          messages.map((m) => (
-            <div
-              key={m.id}
-              className={`message-bubble ${m.uid === user.uid ? "own" : "other"}`}
-            >
-              {m.uid !== user.uid && (
-                <>
-                  {m.photo ? (
-                    <img src={m.photo} alt="pfp" className="msg-avatar" />
-                  ) : (
-                    <div className="msg-avatar-placeholder">
-                      {m.name?.[0]?.toUpperCase() || "?"}
-                    </div>
-                  )}
-                </>
-              )}
+          messages.map((m) => {
+            const isMine = m.uid === user.uid;
+            const avatarUrl = isMine
+              ? (user.photoURL || m.photo || null)
+              : (m.photo || null);
+            const initial =
+              ((isMine ? (user.displayName || m.name) : m.name) || "?")
+                .toString()
+                .charAt(0)
+                .toUpperCase();
 
-              <div className="msg-content">
-                {m.uid !== user.uid && (
-                  <span className="msg-name">{m.name}</span>
+            return (
+              <div
+                key={m.id}
+                className={`message-bubble ${isMine ? "own" : "other"}`}
+              >
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="avatar" className="msg-avatar" />
+                ) : (
+                  <div className="msg-avatar-placeholder">{initial}</div>
                 )}
-                <p className="msg-text">{m.text}</p>
-                <span className="msg-time">{formatDate(m.createdAt)}</span>
+                <div className="msg-content">
+                  {!isMine && <span className="msg-name">{m.name}</span>}
+                  <p className="msg-text">{m.text}</p>
+                  <span className="msg-time">{formatDate(m.createdAt)}</span>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 

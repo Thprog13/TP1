@@ -22,7 +22,7 @@ export default function Chat() {
  
 
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
     const unsub = onSnapshot(q, (snap) => {
       const arr = [];
       snap.forEach((doc) => arr.push({ id: doc.id, ...doc.data() }));
@@ -114,7 +114,7 @@ export default function Chat() {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button type="submit">Envoyer 🚀</button>
+        <button type="submit">Envoyer </button>
       </form>
     </div>
   );

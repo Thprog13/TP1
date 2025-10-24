@@ -27,6 +27,8 @@
   color: #a0aec0;
   padding: 2rem;
   text-align: center;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
 }
 
 .empty-chat-icon {
