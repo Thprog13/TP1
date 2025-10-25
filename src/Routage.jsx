@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context.jsx";
 import Chat from "./Chat.jsx";
 import PrivateChatPage from "./PrivateChatPage.jsx";
@@ -20,9 +20,12 @@ function GuestOnly({ children }) {
 }
 
 export default function Routage() {
+  const location = useLocation();
+  const hideNavbar = location.pathname === "/login" || location.pathname === "/signup";
+
   return (
     <>
-      <Navbar />
+      {!hideNavbar && <Navbar />}
       <Routes>
         <Route
           path="/"
