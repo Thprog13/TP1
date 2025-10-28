@@ -3,6 +3,8 @@ import { db } from "./firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import "./UserList.css";
 
+const defaultAvatar = "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg";
+
 export default function UsersList({ onSelectUser, currentUid }) {
   const [users, setUsers] = useState([]);
 
@@ -27,14 +29,14 @@ export default function UsersList({ onSelectUser, currentUid }) {
         <div className="users-count">{users.length}</div>
       </div>
 
-      <div className="users-items">
+      <div className="users-items scrollable">
         {users.map((u) => (
           <div key={u.id} className="user-item" onClick={() => onSelectUser(u)}>
             <div className="user-avatar">
               {u.photoURL ? (
                 <img src={u.photoURL} alt={u.displayName || "User"} />
               ) : (
-                <span>{u.displayName?.[0]?.toUpperCase() || "?"}</span>
+                <img src={defaultAvatar} alt="avatar anonyme" className="anonyme-avatar" />
               )}
               <span
                 className={`user-status ${

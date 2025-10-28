@@ -12,6 +12,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import "./Profil.css";
 
+const defaultAvatar = "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg";
+
+
 export default function Profil() {
   const { user } = useAuth();
   const [newName, setNewName] = useState(user?.displayName || "");
@@ -101,9 +104,11 @@ export default function Profil() {
               className="current-avatar-preview"
             />
           ) : (
-            <div className="current-avatar-placeholder">
-              {getInitial(user?.displayName)}
-            </div>
+            <img
+              src={defaultAvatar}
+              alt="Photo de profil actuelle"
+              className="current-avatar-preview"
+            />
           )}
         </div>
 

@@ -17,6 +17,8 @@ import { doc, setDoc, updateDoc, getDoc, serverTimestamp } from "firebase/firest
 import { useNavigate, Link } from "react-router-dom";
 import "./Connection.css";
 
+const defaultAvatar = "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg";
+
 export default function Connection() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -55,9 +57,9 @@ export default function Connection() {
     setMsg(err.message || "Une erreur est survenue");
   };
 
-  const setUserOnlineStatus = async (user) => {
-    if (!user) return;
-    const userRef = doc(db, "users", user.uid);
+const setUserOnlineStatus = async (user) => {
+  if (!user) return;
+  const userRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       await updateDoc(userRef, {
@@ -65,13 +67,21 @@ export default function Connection() {
         lastSeen: serverTimestamp(),
       });
     } else {
-      await setDoc(userRef, {
-        email: user.email || null,
-        status: "online",
-        lastSeen: serverTimestamp(),
-        createdAt: serverTimestamp(),
-      });
-    }
+        await setDoc(
+    userRef,
+    {
+      uid: user.uid,
+      email: user.email || null,
+      displayName: user.displayName || "Anonyme",
+      photoURL: user.photoURL || defaultAvatar,
+      isAnonymous: !!user.isAnonymous,
+      status: "online",
+      lastSeen: serverTimestamp(),
+      createdAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+};
   };
 
 

@@ -20,6 +20,7 @@
   background: var(--bg-dark);
   color: white;
   overflow: hidden;
+  min-width: 70vw;
 }
 
 /* === HEADER === */
@@ -108,8 +109,9 @@
 
 /* === OTHER MESSAGES === */
 .message-bubble.other .msg-content {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(128, 128, 128, 0.2);
   border-radius: 14px 14px 14px 4px;
+  color: var(--text);
 }
 
 /* === HEADER (NAME + TIME) === */

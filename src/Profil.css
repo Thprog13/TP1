@@ -20,6 +20,7 @@
   color: var(--text);
   font-family: "Inter", sans-serif;
   padding: 80px 15px;
+  width: 70vw;
 }
 
 /* === PETITE CARTE === */
@@ -29,7 +30,7 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  width: 320px;
+  width: 80vh;
   max-width: 95%;
   padding: 1.5rem;
   display: flex;
@@ -37,6 +38,7 @@
   align-items: center;
   gap: 1rem;
   animation: fadeIn 0.4s ease;
+  height: 90vh;
 }
 
 @keyframes fadeIn {
@@ -47,8 +49,8 @@
 /* === AVATAR === */
 .current-avatar-preview,
 .current-avatar-placeholder {
-  width: 75px;
-  height: 75px;
+  width: 175px;
+  height: 175px;
   border-radius: 50%;
   border: 2px solid var(--primary);
   box-shadow: 0 0 10px rgba(124, 108, 255, 0.4);
@@ -72,7 +74,7 @@
 }
 .user-info p {
   margin: 4px 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 .user-info strong {
   color: var(--hover);
@@ -87,7 +89,7 @@
 }
 .profil-form h3 {
   color: var(--hover);
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin-bottom: 2px;
 }
 .profil-form input {
@@ -96,7 +98,7 @@
   border-radius: 8px;
   padding: 8px 10px;
   color: var(--text);
-  font-size: 0.85rem;
+  font-size: 1rem;
   outline: none;
 }
 .profil-form input:focus {
@@ -111,7 +113,7 @@
   border-radius: 8px;
   padding: 8px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #fff;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(124, 108, 255, 0.3);
@@ -129,7 +131,7 @@
   border-radius: 8px;
   width: 100%;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 .message-alert.success {
   background: rgba(72, 255, 178, 0.1);

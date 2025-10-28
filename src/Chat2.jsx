@@ -11,6 +11,8 @@ import {
 import { useAuth } from "./context.jsx";
 import Message from "./Message.jsx";
 import "./Chat.css";
+const defaultAvatar = "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg";
+
 
 export default function Chat2({ targetUser }) {
   const { user } = useAuth();
@@ -39,7 +41,7 @@ export default function Chat2({ targetUser }) {
       text,
       uid: user.uid,
       name: user.displayName || "Anonyme",
-      photo: user.photoURL || null,
+      photo: user.photoURL || defaultAvatar,
       createdAt: serverTimestamp(),
     });
     setText("");

@@ -60,6 +60,12 @@
   width: 6px;
 }
 
+.users-items.scrollable {
+  max-height: calc(100vh - 120px); /* Adjust based on your header height */
+  overflow-y: auto;
+  padding-right: 5px; /* Space for scrollbar */
+}
+
 .users-items::-webkit-scrollbar-thumb {
   background: rgba(124, 108, 255, 0.3);
   border-radius: 6px;

@@ -12,6 +12,9 @@ import { useAuth } from "./context.jsx";
 import "./Chat.css";
 import { useNavigate } from "react-router-dom";
 
+const defaultAvatar = "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg";
+
+
 export default function Chat() {
   const { user } = useAuth();
   const [text, setText] = useState("");
@@ -19,8 +22,7 @@ export default function Chat() {
   const navigate = useNavigate();
   const goToProfile = () => navigate("/profil");
   const onProfileKey = (e) => { if (e.key === "Enter" || e.key === " ") goToProfile(); }
- 
-
+  
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
     const unsub = onSnapshot(q, (snap) => {
@@ -38,7 +40,7 @@ export default function Chat() {
       text,
       uid: user.uid,
       name: user.displayName || "Anonyme",
-      photo: user.photoURL || null,
+      photo: user.photoURL || defaultAvatar,
       createdAt: serverTimestamp(),
     });
     setText("");
@@ -74,9 +76,7 @@ export default function Chat() {
           {user?.photoURL ? (
             <img src={user.photoURL} alt="avatar" className="user-avatar" />
           ) : (
-            <div className="avatar-placeholder">
-              {user?.displayName?.[0] || "?"}
-            </div>
+            <img src={defaultAvatar} alt="avatar anonyme" className="user-avatar" />
           )}
           <span>{user?.displayName || "Anonyme"}</span>
         </div>
@@ -88,13 +88,11 @@ export default function Chat() {
             key={m.id}
             className={`message-bubble ${m.uid === user.uid ? "own" : ""}`}
           >
-            {m.photo ? (
-              <img src={m.photo} alt="pfp" className="msg-avatar" />
-            ) : (
-              <div className="msg-avatar-placeholder">
-                {m.name?.[0]?.toUpperCase() || "?"}
-              </div>
-            )}
+            <img 
+              src={m.photo || defaultAvatar} 
+              alt="avatar utilisateur" 
+              className="msg-avatar" 
+            />
 
             <div className="msg-content">
               <div className="msg-header">

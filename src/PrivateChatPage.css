@@ -20,6 +20,7 @@
   background: var(--bg-dark);
   color: var(--text);
   overflow: hidden;
+  min-width: 100vh;
 }
 
 /* === HEADER === */
@@ -224,11 +225,12 @@
 
 .private-chat-layout {
   display: flex;
-  height: calc(100vh - 70px);
-  margin-top: 70px;
+  max-height: calc(100vh - 5px);
+  margin-top: 0px;
   background: #0e0e17;
   color: white;
   overflow: hidden;
+  min-width: 100hv;
 }
 
 /* === USERS LIST === */
@@ -330,6 +332,7 @@
   background: #0e0e17;
   padding: 20px;
   overflow: hidden;
+  min-width: 100hv;
 }
 
 /* === EMPTY CHAT === */
@@ -337,6 +340,7 @@
   margin: auto;
   text-align: center;
   color: var(--text-muted);
+  width: 70vw;
 }
 
 .empty-chat-icon {

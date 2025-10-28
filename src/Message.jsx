@@ -1,5 +1,6 @@
 export default function Message({ msg, currentUid }) {
   const isMine = msg.uid === currentUid;
+  const defaultAvatar = "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-avatar-placeholder-png-image_3416697.jpg";
 
   const formatDate = (ts) => {
     if (!ts) return "";
@@ -15,15 +16,14 @@ export default function Message({ msg, currentUid }) {
 
   return (
     <div className={`msg-block ${isMine ? "mine" : "other"}`}>
-      {}
       <div className="msg-info">
         {!isMine && (
           <>
-            {msg.photo ? (
-              <img src={msg.photo} alt="avatar" className="avatar" />
-            ) : (
-              <div className="avatar placeholder">👤</div>
-            )}
+            <img 
+              src={msg.photo || defaultAvatar} 
+              alt={msg.photo ? "avatar" : "avatar anonyme"} 
+              className="avatar" 
+            />
             <span className="msg-name">{msg.name}</span>
             <span className="msg-time">{formatDate(msg.createdAt)}</span>
           </>
@@ -36,7 +36,6 @@ export default function Message({ msg, currentUid }) {
         )}
       </div>
 
-      {}
       <div className={`msg-line ${isMine ? "mine" : "other"}`}>
         <div className="msg-bubble">
           <p className="msg-text">{msg.text}</p>
