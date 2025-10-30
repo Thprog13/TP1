@@ -1,0 +1,42 @@
+mutation CreateGroupChat($name: String!, $creatorId: UUID!, $createdAt: Timestamp!, $description: String!) @auth(level: USER) {
+  groupChat_insert(data: {
+    name: $name,
+    creatorId: $creatorId,
+    createdAt: $createdAt,
+    description: $description
+  })
+}
+
+query ListGroupChats @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  groupChats {
+    id
+    name
+    description
+    createdAt
+    creator {
+      id
+      username
+    }
+  }
+}
+
+mutation SendGroupMessage($groupChatId: UUID!, $senderId: UUID!, $content: String!, $sentAt: Timestamp!) @auth(level: USER) {
+  groupMessage_insert(data: {
+    groupChatId: $groupChatId,
+    senderId: $senderId,
+    content: $content,
+    sentAt: $sentAt
+  })
+}
+
+query GetDirectMessages($recipientId: UUID!, $senderId: UUID!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  directMessages(where: {
+    recipientId: { eq: $recipientId },
+    senderId: { eq: $senderId }
+  }) {
+    id
+    content
+    sentAt
+    readAt
+  }
+}

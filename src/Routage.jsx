@@ -53,6 +53,7 @@ export default function Routage() {
         />
         <Route path="/login" element={<GuestOnly><Connection /></GuestOnly>} />
         <Route path="/signup" element={<GuestOnly><Inscription /></GuestOnly>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

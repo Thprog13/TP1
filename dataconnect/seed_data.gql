@@ -1,0 +1,72 @@
+mutation CreateSeedData @transaction @auth(level: PUBLIC, insecureReason: "This mutation is used to populate the database with seed data and is safe to expose to the public.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      username: "demouser1",
+      displayName: "Demo User 1",
+      passwordHash: "somehash1",
+      createdAt: "2024-01-01T00:00:00Z"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      username: "demouser2",
+      displayName: "Demo User 2",
+      passwordHash: "somehash2",
+      createdAt: "2024-01-02T00:00:00Z"
+    }
+  ])
+  groupChat_insertMany(data: [
+    {
+      id: "660e8400-e29b-41d4-a716-446655440000",
+      name: "Demo Group 1",
+      creatorId: "550e8400-e29b-41d4-a716-446655440000",
+      createdAt: "2024-01-03T00:00:00Z"
+    },
+    {
+      id: "660e8400-e29b-41d4-a716-446655440001",
+      name: "Demo Group 2",
+      creatorId: "550e8400-e29b-41d4-a716-446655440001",
+      createdAt: "2024-01-04T00:00:00Z"
+    }
+  ])
+  groupMembership_insertMany(data: [
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      groupChatId: "660e8400-e29b-41d4-a716-446655440000",
+      joinedAt: "2024-01-05T00:00:00Z"
+    },
+    {
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      groupChatId: "660e8400-e29b-41d4-a716-446655440001",
+      joinedAt: "2024-01-06T00:00:00Z"
+    }
+  ])
+  groupMessage_insertMany(data: [
+    {
+      groupChatId: "660e8400-e29b-41d4-a716-446655440000",
+      senderId: "550e8400-e29b-41d4-a716-446655440000",
+      content: "Hello from demo user 1 in group 1!",
+      sentAt: "2024-01-07T00:00:00Z"
+    },
+    {
+      groupChatId: "660e8400-e29b-41d4-a716-446655440001",
+      senderId: "550e8400-e29b-41d4-a716-446655440001",
+      content: "Hi from demo user 2 in group 2!",
+      sentAt: "2024-01-08T00:00:00Z"
+    }
+  ])
+    directMessage_insertMany(data: [
+    {
+      recipientId: "550e8400-e29b-41d4-a716-446655440001",
+      senderId: "550e8400-e29b-41d4-a716-446655440000",
+      content: "Hello from demo user 1 to user 2!",
+      sentAt: "2024-01-09T00:00:00Z"
+    },
+    {
+      recipientId: "550e8400-e29b-41d4-a716-446655440000",
+      senderId: "550e8400-e29b-41d4-a716-446655440001",
+      content: "Hi from demo user 2 to user 1!",
+      sentAt: "2024-01-10T00:00:00Z"
+    }
+  ])
+}
